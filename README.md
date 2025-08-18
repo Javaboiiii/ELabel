@@ -119,6 +119,46 @@ docker-compose logs -f
 
 When you see something like `Now listening on: http://[::]:8080` on the log, open your browser with the server name or IP address.
 
+
+## How to use by Arun
+
+1. Download .NET
+2. Execute the Restore Command
+```bash
+dotnet restore 
+```
+3. Build the project
+```bash 
+dotnet build 
+```
+4. In my case I have connected the Online Database called Neon DB in Program.cs 
+```javascript
+options.UseSqlServer(connectionString) 
+```
+```javascript 
+options.UseNpgsql(connectionString)
+```
+and added below package 
+```javascript
+<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
+```
+5. Add the connection String to the appsettings.Development.json 
+in the DefaultConnection parameter 
+6. Finally Running our project
+```bash
+dotnet run 
+``` 
+7. For Admin dashboard use 
+- Username: Admin
+- Password: Admin
+- for Below lines we can predict our password
+```javascript
+if (adminPassword is null)
+adminPassword = "Admin";
+```
+9. Note: Before Building delete Migrations it will create new ones while building 
+8. Check running website at localhost:5206
+
 ## 🙋 Contributing
 
 Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) before getting started.

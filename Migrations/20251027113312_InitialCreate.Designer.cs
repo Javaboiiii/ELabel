@@ -57,7 +57,7 @@ namespace ELabel.Migrations
 
                     b.HasIndex("ProductId", "PixelDensity")
                         .IsUnique()
-                        .HasFilter(""PixelDensity" IS NOT NULL");
+                        .HasFilter("PixelDensity IS NOT NULL");
 
                     b.ToTable("Image");
                 });
@@ -185,7 +185,7 @@ namespace ELabel.Migrations
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex")
-                        .HasFilter(""NormalizedName" IS NOT NULL");
+                        .HasFilter("NormalizedName IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });
@@ -275,7 +275,7 @@ namespace ELabel.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
-                        .HasFilter(""NormalizedUserName" IS NOT NULL");
+                        .HasFilter("NormalizedUserName IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });

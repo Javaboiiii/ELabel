@@ -282,7 +282,7 @@ namespace ELabel.Migrations
                 table: "AspNetRoles",
                 column: "NormalizedName",
                 unique: true,
-                filter: ""NormalizedName" IS NOT NULL");
+                filter: "NormalizedName IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -309,14 +309,14 @@ namespace ELabel.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
-                filter: ""NormalizedUserName" IS NOT NULL");
+                filter: "NormalizedUserName IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Image_ProductId_PixelDensity",
                 table: "Image",
                 columns: new[] { "ProductId", "PixelDensity" },
                 unique: true,
-                filter: ""PixelDensity" IS NOT NULL");
+                filter: "PixelDensity IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_Name_Category",

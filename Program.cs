@@ -14,14 +14,28 @@ using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// Load environment variables with ELABEL_ prefix early so they are available when we read the
+// connection string (this covers platforms that export secrets with that prefix).
+builder.Configuration.AddEnvironmentVariables(prefix: "ELABEL_");
 
-// If the connection string is a PostgreSQL URI (e.g. "postgres://..." or "postgresql://..."),
-// use the Npgsql provider. Otherwise default to SQL Server. This allows deploying to Neon/Postgres
-// without changing other code. The project already references Npgsql.EntityFrameworkCore.PostgreSQL in the .csproj.
-if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
-    connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+// Add services to the container.
+var rawConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+// Trim surrounding quotes that some deployment UIs may add, and normalize whitespace.
+var connectionString = rawConnectionString.Trim();
+if ((connectionString.StartsWith('"') && connectionString.EndsWith('"')) ||
+    (connectionString.StartsWith('\'') && connectionString.EndsWith('\'')))
+{
+    connectionString = connectionString.Substring(1, connectionString.Length - 2).Trim();
+}
+
+// Detect Postgres connection strings in either URL form (postgres://...) or key/value (Host=...;Username=...)
+bool isPostgres = connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase)
+    || connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase)
+    || connectionString.IndexOf("Host=", StringComparison.OrdinalIgnoreCase) >= 0
+    || connectionString.IndexOf("Username=", StringComparison.OrdinalIgnoreCase) >= 0;
+
+if (isPostgres)
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseNpgsql(connectionString));

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -15,10 +15,10 @@ namespace ELabel.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "character varying(450)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,21 +29,21 @@ namespace ELabel.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "character varying(450)", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,13 +54,13 @@ namespace ELabel.Migrations
                 name: "Ingredient",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Category = table.Column<int>(type: "int", nullable: false),
-                    ENumber = table.Column<int>(type: "int", nullable: true),
-                    Allergen = table.Column<bool>(type: "bit", nullable: false),
-                    Custom = table.Column<bool>(type: "bit", nullable: false),
-                    LocalizableStrings = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Category = table.Column<int>(type: "integer", nullable: false),
+                    ENumber = table.Column<int>(type: "integer", nullable: true),
+                    Allergen = table.Column<bool>(type: "boolean", nullable: false),
+                    Custom = table.Column<bool>(type: "boolean", nullable: false),
+                    LocalizableStrings = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,18 +71,18 @@ namespace ELabel.Migrations
                 name: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Brand = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Brand = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Volume = table.Column<float>(type: "real", nullable: true),
                     Weight = table.Column<float>(type: "real", nullable: true),
-                    Kind = table.Column<int>(type: "int", nullable: false),
-                    WineVintage = table.Column<int>(type: "int", nullable: true),
-                    WineType = table.Column<int>(type: "int", nullable: true),
-                    WineSugarContent = table.Column<int>(type: "int", nullable: true),
-                    WineAppellation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Kind = table.Column<int>(type: "integer", nullable: false),
+                    WineVintage = table.Column<int>(type: "integer", nullable: true),
+                    WineType = table.Column<int>(type: "integer", nullable: true),
+                    WineSugarContent = table.Column<int>(type: "integer", nullable: true),
+                    WineAppellation = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     WineAlcohol = table.Column<float>(type: "real", nullable: true),
-                    PackagingGases = table.Column<int>(type: "int", nullable: false),
+                    PackagingGases = table.Column<int>(type: "integer", nullable: false),
                     NutritionInformation_PortionVolume = table.Column<float>(type: "real", nullable: false),
                     NutritionInformation_Energy_Kilocalorie = table.Column<float>(type: "real", nullable: false),
                     NutritionInformation_Energy_Kilojoule = table.Column<float>(type: "real", nullable: true),
@@ -92,25 +92,25 @@ namespace ELabel.Migrations
                     NutritionInformation_CarbohydrateSugar = table.Column<float>(type: "real", nullable: false),
                     NutritionInformation_Protein = table.Column<float>(type: "real", nullable: false),
                     NutritionInformation_Salt = table.Column<float>(type: "real", nullable: false),
-                    ResponsibleConsumption_WarningDrinkingDuringPregnancy = table.Column<bool>(type: "bit", nullable: false),
-                    ResponsibleConsumption_WarningDrinkingBelowLegalAge = table.Column<bool>(type: "bit", nullable: false),
-                    ResponsibleConsumption_WarningDrinkingWhenDriving = table.Column<bool>(type: "bit", nullable: false),
-                    Certifications_Organic = table.Column<bool>(type: "bit", nullable: false),
-                    Certifications_Vegetarian = table.Column<bool>(type: "bit", nullable: false),
-                    Certifications_Vegan = table.Column<bool>(type: "bit", nullable: false),
-                    FBOType = table.Column<int>(type: "int", nullable: false),
-                    FBOName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    FBOAddress = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    FBOAdditionalInfo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
-                    Sku = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Ean = table.Column<decimal>(type: "decimal(20,0)", nullable: true),
-                    ExternalShortUrl = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    RedirectUrl = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                    ResponsibleConsumption_WarningDrinkingDuringPregnancy = table.Column<bool>(type: "boolean", nullable: false),
+                    ResponsibleConsumption_WarningDrinkingBelowLegalAge = table.Column<bool>(type: "boolean", nullable: false),
+                    ResponsibleConsumption_WarningDrinkingWhenDriving = table.Column<bool>(type: "boolean", nullable: false),
+                    Certifications_Organic = table.Column<bool>(type: "boolean", nullable: false),
+                    Certifications_Vegetarian = table.Column<bool>(type: "boolean", nullable: false),
+                    Certifications_Vegan = table.Column<bool>(type: "boolean", nullable: false),
+                    FBOType = table.Column<int>(type: "integer", nullable: false),
+                    FBOName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    FBOAddress = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    FBOAdditionalInfo = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Country = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: true),
+                    Sku = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Ean = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
+                    ExternalShortUrl = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    RedirectUrl = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,11 +121,11 @@ namespace ELabel.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<string>(type: "character varying(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -142,11 +142,11 @@ namespace ELabel.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "character varying(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -163,10 +163,10 @@ namespace ELabel.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "character varying(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "character varying(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "character varying(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -183,8 +183,8 @@ namespace ELabel.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "character varying(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "character varying(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,10 +207,10 @@ namespace ELabel.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "character varying(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "character varying(450)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(450)", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -227,13 +227,13 @@ namespace ELabel.Migrations
                 name: "Image",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ContentType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Content = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Width = table.Column<int>(type: "int", nullable: false),
-                    Height = table.Column<int>(type: "int", nullable: false),
-                    PixelDensity = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ContentType = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Content = table.Column<byte[]>(type: "bytea", nullable: false),
+                    Width = table.Column<int>(type: "integer", nullable: false),
+                    Height = table.Column<int>(type: "integer", nullable: false),
+                    PixelDensity = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -250,9 +250,9 @@ namespace ELabel.Migrations
                 name: "ProductIngredient",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
                     Order = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
@@ -282,7 +282,7 @@ namespace ELabel.Migrations
                 table: "AspNetRoles",
                 column: "NormalizedName",
                 unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                filter: ""NormalizedName" IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -309,14 +309,14 @@ namespace ELabel.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                filter: ""NormalizedUserName" IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Image_ProductId_PixelDensity",
                 table: "Image",
                 columns: new[] { "ProductId", "PixelDensity" },
                 unique: true,
-                filter: "[PixelDensity] IS NOT NULL");
+                filter: ""PixelDensity" IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_Name_Category",

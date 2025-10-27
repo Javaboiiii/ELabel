@@ -14,6 +14,13 @@ using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure the app to listen on the PORT environment variable (for cloud deployments like Render)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(int.Parse(port));
+});
+
 // Load environment variables with ELABEL_ prefix early so they are available when we read the
 // connection string (this covers platforms that export secrets with that prefix).
 builder.Configuration.AddEnvironmentVariables(prefix: "ELABEL_");

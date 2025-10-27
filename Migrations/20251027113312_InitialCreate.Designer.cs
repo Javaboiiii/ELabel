@@ -9,18 +9,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ELabel.Data.Migrations
+namespace ELabel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231204113223_PackagingGases")]
-    partial class PackagingGases
+    [Migration("20251027113312_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -39,19 +39,24 @@ namespace ELabel.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("Height")
+                    b.Property<int>("Height")
                         .HasColumnType("int");
+
+                    b.Property<string>("PixelDensity")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Width")
+                    b.Property<int>("Width")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId", "PixelDensity")
+                        .IsUnique()
+                        .HasFilter("[PixelDensity] IS NOT NULL");
 
                     b.ToTable("Image");
                 });
@@ -69,6 +74,9 @@ namespace ELabel.Data.Migrations
 
                     b.Property<bool>("Custom")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("ENumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -88,9 +96,9 @@ namespace ELabel.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Country")
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
+                    b.Property<string>("Brand")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -99,9 +107,6 @@ namespace ELabel.Data.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("Ean")
-                        .HasColumnType("decimal(20,0)");
 
                     b.Property<int>("Kind")
                         .HasColumnType("int");
@@ -113,10 +118,6 @@ namespace ELabel.Data.Migrations
 
                     b.Property<int>("PackagingGases")
                         .HasColumnType("int");
-
-                    b.Property<string>("Sku")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
@@ -362,12 +363,153 @@ namespace ELabel.Data.Migrations
             modelBuilder.Entity("ELabel.Models.Image", b =>
                 {
                     b.HasOne("ELabel.Models.Product", "Product")
-                        .WithOne("Image")
-                        .HasForeignKey("ELabel.Models.Image", "ProductId")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ELabel.Models.Ingredient", b =>
+                {
+                    b.OwnsOne("ELabel.Models.LocalizableStrings", "LocalizableStrings", b1 =>
+                        {
+                            b1.Property<Guid>("IngredientId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Bulgarian")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("bg")
+                                .HasAnnotation("Relational:JsonPropertyName", "bg");
+
+                            b1.Property<string>("Croatian")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("hr")
+                                .HasAnnotation("Relational:JsonPropertyName", "hr");
+
+                            b1.Property<string>("Czech")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("cs")
+                                .HasAnnotation("Relational:JsonPropertyName", "cs");
+
+                            b1.Property<string>("Danish")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("da")
+                                .HasAnnotation("Relational:JsonPropertyName", "da");
+
+                            b1.Property<string>("Dutch")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("nl")
+                                .HasAnnotation("Relational:JsonPropertyName", "nl");
+
+                            b1.Property<string>("English")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("en")
+                                .HasAnnotation("Relational:JsonPropertyName", "en");
+
+                            b1.Property<string>("Estonian")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("et")
+                                .HasAnnotation("Relational:JsonPropertyName", "et");
+
+                            b1.Property<string>("Finnish")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("fi")
+                                .HasAnnotation("Relational:JsonPropertyName", "fi");
+
+                            b1.Property<string>("French")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("fr")
+                                .HasAnnotation("Relational:JsonPropertyName", "fr");
+
+                            b1.Property<string>("German")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("de")
+                                .HasAnnotation("Relational:JsonPropertyName", "de");
+
+                            b1.Property<string>("Greek")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("el")
+                                .HasAnnotation("Relational:JsonPropertyName", "el");
+
+                            b1.Property<string>("Hungarian")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("hu")
+                                .HasAnnotation("Relational:JsonPropertyName", "hu");
+
+                            b1.Property<string>("Irish")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("ga")
+                                .HasAnnotation("Relational:JsonPropertyName", "ga");
+
+                            b1.Property<string>("Italian")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("it")
+                                .HasAnnotation("Relational:JsonPropertyName", "it");
+
+                            b1.Property<string>("Latvian")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("lv")
+                                .HasAnnotation("Relational:JsonPropertyName", "lv");
+
+                            b1.Property<string>("Lithuanian")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("lt")
+                                .HasAnnotation("Relational:JsonPropertyName", "lt");
+
+                            b1.Property<string>("Maltese")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("mt")
+                                .HasAnnotation("Relational:JsonPropertyName", "mt");
+
+                            b1.Property<string>("Polish")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("pl")
+                                .HasAnnotation("Relational:JsonPropertyName", "pl");
+
+                            b1.Property<string>("Portuguese")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("pt")
+                                .HasAnnotation("Relational:JsonPropertyName", "pt");
+
+                            b1.Property<string>("Romanian")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("ro")
+                                .HasAnnotation("Relational:JsonPropertyName", "ro");
+
+                            b1.Property<string>("Slovak")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("sk")
+                                .HasAnnotation("Relational:JsonPropertyName", "sk");
+
+                            b1.Property<string>("Slovene")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("sl")
+                                .HasAnnotation("Relational:JsonPropertyName", "sl");
+
+                            b1.Property<string>("Spanish")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("es")
+                                .HasAnnotation("Relational:JsonPropertyName", "es");
+
+                            b1.Property<string>("Swedish")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("sv")
+                                .HasAnnotation("Relational:JsonPropertyName", "sv");
+
+                            b1.HasKey("IngredientId");
+
+                            b1.ToTable("Ingredient");
+
+                            b1.ToJson("LocalizableStrings");
+
+                            b1.WithOwner()
+                                .HasForeignKey("IngredientId");
+                        });
+
+                    b.Navigation("LocalizableStrings")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ELabel.Models.Product", b =>
@@ -379,6 +521,71 @@ namespace ELabel.Data.Migrations
 
                             b1.Property<bool>("Organic")
                                 .HasColumnType("bit");
+
+                            b1.Property<bool>("Vegan")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("Vegetarian")
+                                .HasColumnType("bit");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.OwnsOne("ELabel.Models.FoodBusinessOperator", "FoodBusinessOperator", b1 =>
+                        {
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("AdditionalInfo")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("FBOAdditionalInfo");
+
+                            b1.Property<string>("Address")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("FBOAddress");
+
+                            b1.Property<string>("Name")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("FBOName");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("int")
+                                .HasColumnName("FBOType");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.OwnsOne("ELabel.Models.Logistics", "Logistics", b1 =>
+                        {
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Country")
+                                .HasMaxLength(2)
+                                .HasColumnType("nvarchar(2)")
+                                .HasColumnName("Country");
+
+                            b1.Property<decimal?>("Ean")
+                                .HasColumnType("decimal(20,0)")
+                                .HasColumnName("Ean");
+
+                            b1.Property<string>("Sku")
+                                .HasMaxLength(20)
+                                .HasColumnType("nvarchar(20)")
+                                .HasColumnName("Sku");
 
                             b1.HasKey("ProductId");
 
@@ -429,6 +636,9 @@ namespace ELabel.Data.Migrations
                                     b2.Property<float>("Kilocalorie")
                                         .HasColumnType("real");
 
+                                    b2.Property<float?>("Kilojoule")
+                                        .HasColumnType("real");
+
                                     b2.HasKey("NutritionInformationProductId");
 
                                     b2.ToTable("Product");
@@ -439,6 +649,29 @@ namespace ELabel.Data.Migrations
 
                             b1.Navigation("Energy")
                                 .IsRequired();
+                        });
+
+                    b.OwnsOne("ELabel.Models.Portability", "Portability", b1 =>
+                        {
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("ExternalShortUrl")
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("ExternalShortUrl");
+
+                            b1.Property<string>("RedirectUrl")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("RedirectUrl");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
                         });
 
                     b.OwnsOne("ELabel.Models.ResponsibleConsumption", "ResponsibleConsumption", b1 =>
@@ -477,9 +710,9 @@ namespace ELabel.Data.Migrations
                                 .HasColumnType("nvarchar(100)")
                                 .HasColumnName("WineAppellation");
 
-                            b1.Property<int?>("Style")
+                            b1.Property<int?>("SugarContent")
                                 .HasColumnType("int")
-                                .HasColumnName("WineStyle");
+                                .HasColumnName("WineSugarContent");
 
                             b1.Property<int?>("Type")
                                 .HasColumnType("int")
@@ -500,7 +733,16 @@ namespace ELabel.Data.Migrations
                     b.Navigation("Certifications")
                         .IsRequired();
 
+                    b.Navigation("FoodBusinessOperator")
+                        .IsRequired();
+
+                    b.Navigation("Logistics")
+                        .IsRequired();
+
                     b.Navigation("NutritionInformation")
+                        .IsRequired();
+
+                    b.Navigation("Portability")
                         .IsRequired();
 
                     b.Navigation("ResponsibleConsumption")
@@ -587,7 +829,7 @@ namespace ELabel.Data.Migrations
 
             modelBuilder.Entity("ELabel.Models.Product", b =>
                 {
-                    b.Navigation("Image");
+                    b.Navigation("Images");
 
                     b.Navigation("ProductIngredients");
                 });

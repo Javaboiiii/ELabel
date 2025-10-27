@@ -4,23 +4,20 @@ using ELabel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ELabel.Data.Migrations
+namespace ELabel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231214191805_WineSugarContent")]
-    partial class WineSugarContent
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -39,19 +36,24 @@ namespace ELabel.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("Height")
+                    b.Property<int>("Height")
                         .HasColumnType("int");
+
+                    b.Property<string>("PixelDensity")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Width")
+                    b.Property<int>("Width")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId", "PixelDensity")
+                        .IsUnique()
+                        .HasFilter("[PixelDensity] IS NOT NULL");
 
                     b.ToTable("Image");
                 });
@@ -69,6 +71,9 @@ namespace ELabel.Data.Migrations
 
                     b.Property<bool>("Custom")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("ENumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -88,9 +93,9 @@ namespace ELabel.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Country")
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
+                    b.Property<string>("Brand")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -99,9 +104,6 @@ namespace ELabel.Data.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("Ean")
-                        .HasColumnType("decimal(20,0)");
 
                     b.Property<int>("Kind")
                         .HasColumnType("int");
@@ -113,10 +115,6 @@ namespace ELabel.Data.Migrations
 
                     b.Property<int>("PackagingGases")
                         .HasColumnType("int");
-
-                    b.Property<string>("Sku")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
@@ -362,8 +360,8 @@ namespace ELabel.Data.Migrations
             modelBuilder.Entity("ELabel.Models.Image", b =>
                 {
                     b.HasOne("ELabel.Models.Product", "Product")
-                        .WithOne("Image")
-                        .HasForeignKey("ELabel.Models.Image", "ProductId")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -521,6 +519,71 @@ namespace ELabel.Data.Migrations
                             b1.Property<bool>("Organic")
                                 .HasColumnType("bit");
 
+                            b1.Property<bool>("Vegan")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("Vegetarian")
+                                .HasColumnType("bit");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.OwnsOne("ELabel.Models.FoodBusinessOperator", "FoodBusinessOperator", b1 =>
+                        {
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("AdditionalInfo")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("FBOAdditionalInfo");
+
+                            b1.Property<string>("Address")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("FBOAddress");
+
+                            b1.Property<string>("Name")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("FBOName");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("int")
+                                .HasColumnName("FBOType");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.OwnsOne("ELabel.Models.Logistics", "Logistics", b1 =>
+                        {
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Country")
+                                .HasMaxLength(2)
+                                .HasColumnType("nvarchar(2)")
+                                .HasColumnName("Country");
+
+                            b1.Property<decimal?>("Ean")
+                                .HasColumnType("decimal(20,0)")
+                                .HasColumnName("Ean");
+
+                            b1.Property<string>("Sku")
+                                .HasMaxLength(20)
+                                .HasColumnType("nvarchar(20)")
+                                .HasColumnName("Sku");
+
                             b1.HasKey("ProductId");
 
                             b1.ToTable("Product");
@@ -570,6 +633,9 @@ namespace ELabel.Data.Migrations
                                     b2.Property<float>("Kilocalorie")
                                         .HasColumnType("real");
 
+                                    b2.Property<float?>("Kilojoule")
+                                        .HasColumnType("real");
+
                                     b2.HasKey("NutritionInformationProductId");
 
                                     b2.ToTable("Product");
@@ -580,6 +646,29 @@ namespace ELabel.Data.Migrations
 
                             b1.Navigation("Energy")
                                 .IsRequired();
+                        });
+
+                    b.OwnsOne("ELabel.Models.Portability", "Portability", b1 =>
+                        {
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("ExternalShortUrl")
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("ExternalShortUrl");
+
+                            b1.Property<string>("RedirectUrl")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("RedirectUrl");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
                         });
 
                     b.OwnsOne("ELabel.Models.ResponsibleConsumption", "ResponsibleConsumption", b1 =>
@@ -641,7 +730,16 @@ namespace ELabel.Data.Migrations
                     b.Navigation("Certifications")
                         .IsRequired();
 
+                    b.Navigation("FoodBusinessOperator")
+                        .IsRequired();
+
+                    b.Navigation("Logistics")
+                        .IsRequired();
+
                     b.Navigation("NutritionInformation")
+                        .IsRequired();
+
+                    b.Navigation("Portability")
                         .IsRequired();
 
                     b.Navigation("ResponsibleConsumption")
@@ -728,7 +826,7 @@ namespace ELabel.Data.Migrations
 
             modelBuilder.Entity("ELabel.Models.Product", b =>
                 {
-                    b.Navigation("Image");
+                    b.Navigation("Images");
 
                     b.Navigation("ProductIngredients");
                 });

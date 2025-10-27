@@ -16,8 +16,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+
+// If the connection string is a PostgreSQL URI (e.g. "postgres://..." or "postgresql://..."),
+// use the Npgsql provider. Otherwise default to SQL Server. This allows deploying to Neon/Postgres
+// without changing other code. The project already references Npgsql.EntityFrameworkCore.PostgreSQL in the .csproj.
+if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
+    connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
+else
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

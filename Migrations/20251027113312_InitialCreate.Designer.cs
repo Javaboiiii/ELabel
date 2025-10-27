@@ -237,7 +237,7 @@ namespace ELabel.Migrations
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
-                    b.Property<timestamp with time zone?>("LockoutEnd")
+                    b.Property<DateTimeOffset>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")

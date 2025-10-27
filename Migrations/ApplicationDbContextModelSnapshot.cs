@@ -38,7 +38,7 @@ namespace ELabel.Migrations
                         .HasColumnType("character varying(20)");
 
                     b.Property<int>("Height")
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     b.Property<string>("PixelDensity")
                         .HasMaxLength(5)
@@ -48,7 +48,7 @@ namespace ELabel.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("Width")
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -65,16 +65,16 @@ namespace ELabel.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<bool>("Allergen")
-                        HasColumnType("boolean");
+                        .HasColumnType("boolean");
 
                     b.Property<int>("Category")
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Custom")
-                        HasColumnType("boolean");
+                        .HasColumnType("boolean");
 
                     b.Property<int?>("ENumber")
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -107,7 +107,7 @@ namespace ELabel.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Kind")
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -115,7 +115,7 @@ namespace ELabel.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<int>("PackagingGases")
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
@@ -191,7 +191,7 @@ namespace ELabel.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -218,7 +218,7 @@ namespace ELabel.Migrations
                         .HasColumnType("character varying(450)");
 
                     b.Property<int>("AccessFailedCount")
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -229,12 +229,12 @@ namespace ELabel.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        HasColumnType("boolean");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
-                        HasColumnType("boolean");
+                        .HasColumnType("boolean");
 
-                    b.Property<timestamp with time zone?>("LockoutEnd")
+                    b.Property<DateTimeOffset>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
@@ -252,13 +252,13 @@ namespace ELabel.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        HasColumnType("boolean");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        HasColumnType("boolean");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -281,7 +281,7 @@ namespace ELabel.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        HasColumnType("integer");
+                        .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -518,13 +518,13 @@ namespace ELabel.Migrations
                                 .HasColumnType("uuid");
 
                             b1.Property<bool>("Organic")
-                                HasColumnType("boolean");
+                                .HasColumnType("boolean");
 
                             b1.Property<bool>("Vegan")
-                                HasColumnType("boolean");
+                                .HasColumnType("boolean");
 
                             b1.Property<bool>("Vegetarian")
-                                HasColumnType("boolean");
+                                .HasColumnType("boolean");
 
                             b1.HasKey("ProductId");
 
@@ -555,7 +555,7 @@ namespace ELabel.Migrations
                                 .HasColumnName("FBOName");
 
                             b1.Property<int>("Type")
-                                HasColumnType("integer")
+                                .HasColumnType("integer")
                                 .HasColumnName("FBOType");
 
                             b1.HasKey("ProductId");
@@ -678,13 +678,13 @@ namespace ELabel.Migrations
                                 .HasColumnType("uuid");
 
                             b1.Property<bool>("WarningDrinkingBelowLegalAge")
-                                HasColumnType("boolean");
+                                .HasColumnType("boolean");
 
                             b1.Property<bool>("WarningDrinkingDuringPregnancy")
-                                HasColumnType("boolean");
+                                .HasColumnType("boolean");
 
                             b1.Property<bool>("WarningDrinkingWhenDriving")
-                                HasColumnType("boolean");
+                                .HasColumnType("boolean");
 
                             b1.HasKey("ProductId");
 
@@ -709,15 +709,15 @@ namespace ELabel.Migrations
                                 .HasColumnName("WineAppellation");
 
                             b1.Property<int?>("SugarContent")
-                                HasColumnType("integer")
+                                .HasColumnType("integer")
                                 .HasColumnName("WineSugarContent");
 
                             b1.Property<int?>("Type")
-                                HasColumnType("integer")
+                                .HasColumnType("integer")
                                 .HasColumnName("WineType");
 
                             b1.Property<int?>("Vintage")
-                                HasColumnType("integer")
+                                .HasColumnType("integer")
                                 .HasColumnName("WineVintage");
 
                             b1.HasKey("ProductId");
